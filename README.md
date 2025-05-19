@@ -1,11 +1,11 @@
 # Lumine
 
 <p align="center">
-  <img src="https://github.com/Mvclr/Lumine/blob/main/view/images/img-readme2.jpg?raw=true" alt="Lumine Logo" width="200"/>
+  <img src="https://github.com/Mvclr/Lumine/blob/main/view/images/img-readme.png?raw=true" alt="Lumine Logo" width="500"/>
 </p>
 
 <p align="center">
-  <img src="https://github.com/Mvclr/Lumine/blob/main/view/images/img-readme2.jpg?raw=true" alt="Lumine Tela Login" width="600"/>
+  <img src="https://github.com/Mvclr/Lumine/blob/main/view/images/img-readme2.jpg?raw=true" alt="Lumine Tela Login" width="900"/>
 </p>
 
 ---
