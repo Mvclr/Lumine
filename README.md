@@ -1,7 +1,7 @@
 # Lumine
 
 <p align="center">
-  <img src="https://github.com/Mvclr/Lumine/blob/main/view/images/img-readme.png?raw=true" alt="Lumine Logo" width="500" height="200"/>
+  <img src="https://raw.githubusercontent.com/Mvclr/Lumine/refs/heads/main/view/images/1-removebg-preview%20(1).png" alt="Lumine Logo" width="500"/>
 </p>
 
 <p align="center">
