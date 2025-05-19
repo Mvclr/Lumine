@@ -1,9 +1,3 @@
-# Lumine
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Mvclr/Lumine/refs/heads/main/view/images/1-removebg-preview%20(1).png" alt="Lumine Logo" width="500"/>
-</p>
-
 <p align="center">
   <img src="https://github.com/Mvclr/Lumine/blob/main/view/images/img-readme2.jpg?raw=true" alt="Lumine Tela Login" width="1100"/>
 </p>
