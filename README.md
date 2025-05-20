@@ -1,11 +1,15 @@
+<<<<<<< HEAD
 # Lumine
+Site de aluguel e compra de filmes
 
-<p align="center">
-  <img src="../Lumine/view/images/img-readme.png.png" alt="Lumine Logo" width="200"/>
-</p>
 
+
+
+
+
+=======
 <p align="center">
-  <img src="../Lumine/view/images/img-readme2.jpg" alt="Lumine Tela Login" width="600"/>
+  <img src="https://github.com/Mvclr/Lumine/blob/main/view/images/img-readme2.jpg?raw=true" alt="Lumine Tela Login" width="1100"/>
 </p>
 
 ---
@@ -39,3 +43,4 @@ Este projeto está em desenvolvimento.
 Não está disponível para cópia, redistribuição ou uso externo.
 
 ---
+>>>>>>> dd25a04b25d3b280c15a76650601ad32e06ea2f2

@@ -12,7 +12,7 @@
 
     <header>
         <div class="logo">
-            <a href="/app.html">
+            <a href="/">
                 <img src="../images/logo.png" alt="logo-header">
             </a>
         </div>
@@ -23,20 +23,20 @@
                 <h2>Sign in</h2>
                 <form>
                     <div class="form-group">
-                        <label for="email">Your email</label>
-                        <input type="email" id="email" placeholder="you@example.com" />
+                        <label for="username">Your username</label>
+                        <input type="text" id="email" placeholder="Username" name="user"/>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" id="password" placeholder="* * * * * * * *" />
+                        <input type="password" id="password" placeholder="* * * * * * * *" name="password"/>
                     </div>
                     <div class="form-options">
                         <div></div>
                         <a href="#">Forgot password?</a>
                     </div>
-                    <button type="submit" class="btn">Sign in</button>
+                    <form action="/login" method="post"><button type="submit" class="btn">Sign in</button></form>
                     <div class="signup-text">
-                        Don’t have an account? <a href="../html/registro.html">Sign up</a>
+                        Don’t have an account? <a href="/cadastro">Sign up</a>
                     </div>
                 </form>
             </div>

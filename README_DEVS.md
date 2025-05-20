@@ -1,0 +1,1 @@
+# Roda npm i no terminal aí que vai funcionar já
