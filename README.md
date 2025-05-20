@@ -1,11 +1,7 @@
 # Lumine
 
 <p align="center">
-  <img src="../Lumine/view/images/img-readme.png.png" alt="Lumine Logo" width="200"/>
-</p>
-
-<p align="center">
-  <img src="../Lumine/view/images/img-readme2.jpg" alt="Lumine Tela Login" width="600"/>
+  <img src="https://raw.githubusercontent.com/Mvclr/Lumine/refs/heads/main/public/images/img-readme2.jpg" alt="Lumine Tela Login" width="100%"/>
 </p>
 
 ---
