@@ -97,7 +97,7 @@
 
               <div class="profile">
                 <img
-                  src="../images/profile-test.png"
+                  src="../upload/profile-account.png"
                   alt="profile"
                   onclick="openProfilePopup()"
                 />
@@ -129,8 +129,6 @@
       </aside>
     </section>
 
-    <script src="js/app.js"></script>
-
     <!-- POP-UP PERFIL -->
 
     <div id="profile-overlay" class="overlay hidden">
@@ -142,13 +140,28 @@
           <div class="account-left">
             <div class="account-top">
               <div class="account-img">
-                <img src="../images/manel.png" alt="profile" />
+                <div class="profile-wrapper">
+                  <form id="form">
+                    <img
+                      id="profile-img"
+                      src="../upload/profile-account.png"
+                      alt="Perfil"
+                      title="Clique para alterar"
+                    />
+                    <input
+                      type="file"
+                      id="file-input"
+                      name="profileImage"
+                      accept="image/*"
+                    />
+                  </form>
+                </div>
               </div>
             </div>
 
             <div class="navegation">
-                <h2 class="username">Manoel Vitor</h2>
-                <p class="bio">Odeio o Arthur Nykisom</p>
+              <h2 class="username">Manoel Vitor</h2>
+              <p class="bio">Odeio o Arthur Nykisom</p>
             </div>
 
             <div class="logout">
@@ -163,5 +176,7 @@
         </div>
       </div>
     </div>
+
+    <script src="js/app.js"></script>
   </body>
 </html>

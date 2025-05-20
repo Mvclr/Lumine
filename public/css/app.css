@@ -449,14 +449,13 @@ main {
   height: 60%;
 }
 
-.popup-profile .account-section .account-left .navegation h2{
-    margin-bottom: 7px;
+.popup-profile .account-section .account-left .navegation h2 {
+  margin-bottom: 7px;
 }
 
-.popup-profile .account-section .account-left .navegation p{
-    font-size: 12px;
+.popup-profile .account-section .account-left .navegation p {
+  font-size: 12px;
 }
-
 
 .popup-profile .account-section .account-left .logout {
   display: flex;
@@ -492,4 +491,16 @@ main {
 .popup-profile .account-section .account-left .account-img img {
   width: 150px;
   border-radius: 50px;
+}
+
+#profile-img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid #aaa;
+}
+#file-input {
+  display: none;
 }
