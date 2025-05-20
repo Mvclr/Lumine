@@ -16,3 +16,13 @@ window.addEventListener("load", () => {
         }, { once: true });
     }, 1500);
 });
+
+// POP-UP PERFIL
+
+function openProfilePopup() {
+  document.getElementById('profile-overlay').classList.remove('hidden');
+}
+
+function closeProfilePopup() {
+  document.getElementById('profile-overlay').classList.add('hidden');
+}
