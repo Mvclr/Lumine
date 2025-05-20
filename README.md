@@ -1,4 +1,4 @@
-# Lumine
+# Lumine 💻
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Mvclr/Lumine/refs/heads/main/public/images/img-readme2.jpg" alt="Lumine Tela Login" width="100%"/>
