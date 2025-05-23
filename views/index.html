@@ -141,10 +141,10 @@
             <div class="account-top">
               <div class="account-img">
                 <div class="profile-wrapper">
-                  <form id="form">
+                  <form id="form" method="post" action="/upload" enctype="multipart/form-data">
                     <img
                       id="profile-img"
-                      src="../upload/profile-account.png"
+                      src="../uploads/profile.png"
                       alt="Perfil"
                       title="Clique para alterar"
                     />
@@ -166,9 +166,9 @@
 
             <div class="logout">
               <div class="logout-btn">
-                <a href="index.html">
+                <form action="/logout" method="POST">
                   <button class="logout-button">Logout</button>
-                </a>
+                </form>
               </div>
             </div>
           </div>
