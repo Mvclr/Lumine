@@ -1,25 +1,73 @@
 // PRELOAD
-
 const preloader = document.getElementById("preloader");
-
+let header = document.querySelector("header");
 requestAnimationFrame(() => {
   preloader.classList.add("visible");
 });
 
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    preloader.classList.remove("visible");
-    preloader.classList.add("hidden");
+const isLoggedIn = () => {  fetch('/api/IsLoggedIn')
+  .then(response => response.json())
+  .then(data => {
+    if (data.loggedIn === true) {
+      console.log("Usuário logado");
+       header.innerHTML = `
+          <div class="input">
+            <i class="bi bi-search"></i>
+            <input
+              type="text"
+              name="pesquisa"
+              placeholder="Search orders"
+              id="input"
+            />
+          </div>
 
-    preloader.addEventListener(
-      "transitionend",
-      () => {
-        preloader.style.display = "none";
-      },
-      { once: true }
-    );
-  }, 1500);
-});
+          <div class="header-right">
+            <div class="buttons">
+              <div class="btn1">
+                <a href="#">
+                  <button class="lumines-coin">
+                    <img src="images/lumines.png" />
+                  </button>
+                </a>
+              </div>
+
+              <div class="btn2">
+                <a href="#">
+                  <button class="notifications">
+                    <i class="bi bi-bell"></i>
+                  </button>
+                </a>
+              </div>
+
+              <div class="btn3">
+                <a href="#">
+                  <button class="carrinho">
+                    <i class="bi bi-basket3"></i>
+                  </button>
+                </a>
+              </div>
+
+              <div class="profile">
+                <img
+                  src="../uploads/profile.png"
+                  alt="profile"
+                  onclick="openProfilePopup()"
+                />
+              </div>
+            </div>
+
+          </div>
+       
+       
+       `;
+    } else {
+      console.log("Usuário não logado");
+    }
+  })
+  .catch(error => {
+    console.error('Erro ao conferir login:', error);
+  });
+}
 
 // POP-UP PERFIL
 
@@ -30,6 +78,9 @@ function openProfilePopup() {
 function closeProfilePopup() {
   document.getElementById("profile-overlay").classList.add("hidden");
 }
+
+
+//async function isLoggedIn() {}
 
 // UPLOAD IMAGE
 
@@ -58,3 +109,19 @@ fileInput.addEventListener('change', () => {
   }
 });
 
+
+window.addEventListener("load", () => {
+  isLoggedIn();
+  setTimeout(() => {
+    preloader.classList.remove("visible");
+    preloader.classList.add("hidden");
+
+    preloader.addEventListener(
+      "transitionend",
+      () => {
+        preloader.style.display = "none";
+      },
+      { once: true }
+    );
+  }, 1500);
+});
