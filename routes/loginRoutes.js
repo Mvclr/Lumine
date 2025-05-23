@@ -14,11 +14,11 @@ router.get("/login", (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const { user, password } = req.body;
+  const { username, password } = req.body;
   const foundUser = await new Promise((resolve, reject) => {
     connection.query(
       "SELECT * FROM users WHERE username = ?",
-      [user],
+      [username],
       (error, results) => {
         if (error) {
           console.error("Error checking user:", error);
@@ -44,7 +44,7 @@ router.post("/login", async (req, res) => {
     expiresIn: 30000,
   });
   res.cookie("token", token, { httpOnly: true, maxAge: 30000000 });
-  return res.sendFile(path.join(__dirname, "../views", "principal.html"));
+  return res.sendFile(path.join(__dirname, "../views", "index.html"));
 });
 
 router.post("/logout", (req, res) => {

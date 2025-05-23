@@ -12,11 +12,11 @@ router.get("/cadastro", (req, res) => {
 });
 
 router.post("/cadastro", async (req, res) => {
-  const { name, user, password } = req.body;
+  const { email, username, password } = req.body;
   const userVerify = await new Promise((resolve, reject) => {
     connection.query(
-      "SELECT name FROM users WHERE username = ?",
-      [user],
+      "SELECT id FROM users WHERE username = ?",
+      [username],
       (error, results) => {
         if (error) {
           console.error("Error checking user:", error);
@@ -33,11 +33,11 @@ router.post("/cadastro", async (req, res) => {
       .json({ message: "Usuário já cadastrado, tente outro nome de usuário" });
   }
 
-  const newUser = new User(name, user, password);
+  const newUser = new User(email, username, password);
   await newUser.hashPassword();
   connection.query(
-    "INSERT INTO users (name, username, password) VALUES (?, ?, ?)",
-    [newUser.name, newUser.username, newUser.password],
+    "INSERT INTO users (email, username, password) VALUES (?, ?, ?)",
+    [newUser.email, newUser.username, newUser.password],
     (error, results) => {
       if (error) {
         console.error("Error inserting user:", error);

@@ -21,10 +21,10 @@
         <div class="container">
             <div class="form-section">
                 <h2>Sign in</h2>
-                <form>
+                <form action="/login" method="post">
                     <div class="form-group">
                         <label for="username">Your username</label>
-                        <input type="text" id="email" placeholder="Username" name="user"/>
+                        <input type="text" id="email" placeholder="Username" name="username"/>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
@@ -34,7 +34,7 @@
                         <div></div>
                         <a href="#">Forgot password?</a>
                     </div>
-                    <form action="/login" method="post"><button type="submit" class="btn">Sign in</button></form>
+                    <button type="submit" class="btn">Sign in</button>
                     <div class="signup-text">
                         Don’t have an account? <a href="/cadastro">Sign up</a>
                     </div>
