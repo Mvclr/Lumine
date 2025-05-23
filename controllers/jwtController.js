@@ -3,7 +3,7 @@ require("dotenv").config();
 const secretKey = process.env.SECRET || "MySecret";
 const jwtAuth = new JWTAuth(secretKey);
 
-function verifyJWT(req, res, next) {
+function verifyJWTMiddleware(req, res, next) {
   const token = req.cookies.token;
   if (!token) {
     return res.redirect("/login");
@@ -17,4 +17,14 @@ function verifyJWT(req, res, next) {
   }
 }
 
-module.exports = { verifyJWT, jwtAuth };
+function verifyJWT(token, callback){
+    try {
+    const decoded = jwtAuth.verifyToken(token);
+    callback(null, decoded);
+  } catch (err) {
+    callback(err);
+  }
+}
+
+
+module.exports = { verifyJWTMiddleware, verifyJWT, jwtAuth};
