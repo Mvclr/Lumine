@@ -126,6 +126,9 @@ fileInput.addEventListener('change', () => {
 });
 
 
+<<<<<<< HEAD
+
+=======
 window.addEventListener("load", () => {
   isLoggedIn();
   setTimeout(() => {
@@ -141,3 +144,4 @@ window.addEventListener("load", () => {
     );
   }, 1500);
 });
+>>>>>>> bb2676cf853ccdb746bacfc1e2fa781c7b370f21
