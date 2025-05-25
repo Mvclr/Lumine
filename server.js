@@ -6,7 +6,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser()); // Add this line to parse cookies
+app.use(cookieParser());
 
 // Routes
 app.use(routes);
