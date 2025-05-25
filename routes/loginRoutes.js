@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { jwtAuth } = require("../controllers/jwtController.js");
 const connection = require("../db/db_server.js");
-
 const router = express.Router();
 
 router.use(express.static(path.join(__dirname, "../public")));
@@ -22,29 +21,34 @@ router.post("/login", async (req, res) => {
       (error, results) => {
         if (error) {
           console.error("Error checking user:", error);
-          reject(res.status(500).json({ message: "Erro ao verificar usuário" }));
+          return reject(res.status(500).json({ message: "Erro ao verificar usuário" }));
         } else {
-          resolve(results[0]); 
+          resolve(results[0]);
         }
       }
     );
   });
-
+  
   if (!foundUser) {
-    return message = "Usuário ou senha incorretos";
-    console.log("Senha ou usuário incorreto");
+  console.log("Senha ou usuário incorreto");
+  return res.status(401).json({ message: "Usuário ou senha incorretos" });
+  } else{
+    const passwordMatch = await bcrypt.compare(password, foundUser.password);
+    if (!passwordMatch) {
+  console.log("Senha ou usuário incorreto");
+  return res.status(401).json({ message: "Usuário ou senha incorretos" });
   }
-
-  const passwordMatch = await bcrypt.compare(password, foundUser.password);
-  if (!passwordMatch) {
-    console.log("Senha ou usuário incorreto");
-  }
-
-  const token = jwt.sign({ user: foundUser.username }, jwtAuth.getSecretKey(), {
+   else{
+    const token = jwt.sign({ user: foundUser.username }, jwtAuth.getSecretKey(), {
     expiresIn: 30000,
   });
-  res.cookie("token", token, { httpOnly: true, maxAge: 30000000 });
-  return res.sendFile(path.join(__dirname, "../views", "index.html"));
+    res.cookie("token", token, { httpOnly: true });
+    res.cookie("username", foundUser.username, { httpOnly: true });
+    return res.sendFile(path.join(__dirname, "../views", "index.html"));
+  }
+  }
+
+  
 });
 
 
