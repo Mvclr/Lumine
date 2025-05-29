@@ -1,4 +1,4 @@
-const { verifyJWT } = require("./jwtController.js");
+import { verifyJWT } from "./jwtController.js";
 function isLoggedIn(req, res, next) {
   const token = req.cookies.token;
   if (!token) {
@@ -13,4 +13,4 @@ function isLoggedIn(req, res, next) {
   });
 }
 
-module.exports = isLoggedIn;
+export default isLoggedIn;

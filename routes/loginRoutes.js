@@ -1,10 +1,14 @@
-const express = require("express");
-const path = require("path");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const { jwtAuth } = require("../controllers/jwtController.js");
-const connection = require("../db/db_server.js");
+import express from "express";
+import path from "path";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import { jwtAuth } from "../controllers/jwtController.js";
+import connection from "../db/db_server.js";
+import { fileURLToPath } from "url";
+
 const router = express.Router();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 router.use(express.static(path.join(__dirname, "../public")));
 
@@ -30,27 +34,22 @@ router.post("/login", async (req, res) => {
   });
   
   if (!foundUser) {
-  console.log("Senha ou usuário incorreto");
-  return res.status(401).json({ message: "Usuário ou senha incorretos" });
-  } else{
+    console.log("Senha ou usuário incorreto");
+    return res.status(401).json({ message: "Usuário ou senha incorretos" });
+  } else {
     const passwordMatch = await bcrypt.compare(password, foundUser.password);
     if (!passwordMatch) {
-  console.log("Senha ou usuário incorreto");
-  return res.status(401).json({ message: "Usuário ou senha incorretos" });
+      console.log("Senha ou usuário incorreto");
+      return res.status(401).json({ message: "Usuário ou senha incorretos" });
+    } else {
+      const token = jwt.sign({ user: foundUser.username }, jwtAuth.getSecretKey(), {
+        expiresIn: 30000,
+      });
+      res.cookie("token", token, { httpOnly: true });
+      res.cookie("username", foundUser.username, { httpOnly: true });
+      return res.sendFile(path.join(__dirname, "../views", "index.html"));
+    }
   }
-   else{
-    const token = jwt.sign({ user: foundUser.username }, jwtAuth.getSecretKey(), {
-    expiresIn: 30000,
-  });
-    res.cookie("token", token, { httpOnly: true });
-    res.cookie("username", foundUser.username, { httpOnly: true });
-    return res.sendFile(path.join(__dirname, "../views", "index.html"));
-  }
-  }
-
-  
 });
 
-
-
-module.exports = router;
+export default router;

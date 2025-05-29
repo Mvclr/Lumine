@@ -1,8 +1,10 @@
-const express = require("express");
-const loginRoutes = require("./routes/loginRoutes");
-const principalRoutes = require("./routes/principalRoutes");
-const cadastroRoutes = require("./routes/registerRoutes");
-const perfilRoutes = require("./routes/perfilRoutes");
+import express from "express";
+import loginRoutes from "./routes/loginRoutes.js";
+import principalRoutes from "./routes/principalRoutes.js";
+import cadastroRoutes from "./routes/registerRoutes.js";
+import perfilRoutes from "./routes/perfilRoutes.js";
+import movieRoutes from "./routes/movieRoutes.js";
+
 
 const router = express.Router();
 
@@ -10,6 +12,6 @@ router.use(loginRoutes);
 router.use(principalRoutes);
 router.use(cadastroRoutes);
 router.use(perfilRoutes)
+router.use(movieRoutes)
 
-
-module.exports = router;
+export default router;

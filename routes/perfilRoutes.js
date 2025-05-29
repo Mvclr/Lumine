@@ -1,10 +1,10 @@
-const express = require('express');
-const multer = require('multer');
-const path = require('path');
-const router = express.Router();
-const isLoggedIn = require('../controllers/IsLoggedIn.js');
-router.use(express.static('public'));
+import express from 'express';
+import multer from 'multer';
+import path from 'path';
+import isLoggedIn from '../controllers/IsLoggedIn.js';
 
+const router = express.Router();
+router.use(express.static('public'));
 router.use('/uploads', express.static('uploads'));
 
 const storage = multer.diskStorage({
@@ -17,7 +17,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-
 router.post('/upload', isLoggedIn, upload.single('profileImage'), (req, res) => {
   const user = req.cookies.username; 
   const ext = path.extname(req.file.originalname);
@@ -26,7 +25,9 @@ router.post('/upload', isLoggedIn, upload.single('profileImage'), (req, res) => 
 
 router.post("/logout", (req, res) => {
   res.clearCookie("token");
-  res.redirect("/login");
+  res.clearCookie("username");
+  res.redirect("/principal");
 });
-module.exports = router;
+
+export default router;
 

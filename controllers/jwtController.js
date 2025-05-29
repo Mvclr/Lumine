@@ -1,5 +1,6 @@
-const JWTAuth = require("../classes/jwtAuth.js");
-require("dotenv").config();
+import JWTAuth from "../classes/jwtAuth.js";
+import dotenv from "dotenv";
+dotenv.config();
 const secretKey = process.env.SECRET || "MySecret";
 const jwtAuth = new JWTAuth(secretKey);
 
@@ -18,7 +19,7 @@ function verifyJWTMiddleware(req, res, next) {
 }
 
 function verifyJWT(token, callback){
-    try {
+  try {
     const decoded = jwtAuth.verifyToken(token);
     callback(null, decoded);
   } catch (err) {
@@ -26,5 +27,4 @@ function verifyJWT(token, callback){
   }
 }
 
-
-module.exports = { verifyJWTMiddleware, verifyJWT, jwtAuth};
+export { verifyJWTMiddleware, verifyJWT, jwtAuth };

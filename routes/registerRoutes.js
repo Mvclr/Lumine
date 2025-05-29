@@ -1,9 +1,14 @@
-const express = require("express");
-const path = require("path");
-const bcrypt = require("bcrypt");
-const User = require("../classes/User.js");
-const connection = require("../db/db_server.js");
+import express from "express";
+import path from "path";
+import bcrypt from "bcrypt";
+import User from "../classes/User.js";
+import connection from "../db/db_server.js";
+import { fileURLToPath } from "url";
+
 const router = express.Router();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 router.use(express.static(path.join(__dirname, "../public")));
 
@@ -49,4 +54,4 @@ router.post("/cadastro", async (req, res) => {
   );
 });
 
-module.exports = router;
+export default router;
