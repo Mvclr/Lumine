@@ -504,5 +504,37 @@ main {
 #file-input {
   display: none;
 }
+.moviesContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+}
 
+.poster {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-align: center;
+}
+
+.poster:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.7);
+}
+
+.poster img {
+  width: 100%;
+  height: 225px;
+  object-fit: cover;
+  display: block;
+}
+
+.poster h3 {
+  padding: 10px;
+  font-size: 14px;
+  margin: 0;
+  color: #fff;
+}
 
