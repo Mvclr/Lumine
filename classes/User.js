@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
 
 class User {
   constructor(email, username, password) {
@@ -16,4 +16,4 @@ class User {
   }
 }
 
-module.exports = User;
+export default User;

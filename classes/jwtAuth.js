@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
 class JWTAuth {
   #secretKey;
@@ -22,4 +22,4 @@ class JWTAuth {
   }
 }
 
-module.exports = JWTAuth;
+export default JWTAuth;
