@@ -1,5 +1,9 @@
 // PRELOAD
 const preloader = document.getElementById("preloader");
+
+
+// Verificação de login + gerador de header
+
 let header = document.querySelector("header");
 requestAnimationFrame(() => {
   preloader.classList.add("visible");
@@ -66,7 +70,7 @@ const isLoggedIn = () => {  fetch('/api/IsLoggedIn')
             profileImgPopup.src = `/uploads/${username}.png?t=${Date.now()}`;
             profileImgPopup.onerror = function() {
               this.onerror = null;
-              this.src = '/uploads/profile.png';
+              this.src = '/uploads/profile-account.png';
             };
 }
       } else {
@@ -89,7 +93,6 @@ function closeProfilePopup() {
 }
 
 
-//async function isLoggedIn() {}
 
 // UPLOAD IMAGE
 
@@ -126,11 +129,31 @@ fileInput.addEventListener('change', () => {
 });
 
 
-<<<<<<< HEAD
+// Chamado para gerar os posters na tela principal
 
-=======
+const postersContainer = document.getElementById('moviesContainer');
+const fetchPosters = () => {
+  fetch('/api/mainMovies')
+    .then(response => response.json())
+    .then(data => {
+      postersContainer.innerHTML = '';
+      data.forEach(poster => {
+        const posterElement = document.createElement('div');
+        posterElement.className = 'poster';
+        posterElement.innerHTML = `
+          <img src="${poster.posterUrl}" alt="${poster.title}" />
+          <h3>${poster.title}</h3>
+        `;
+        postersContainer.appendChild(posterElement);
+      });
+    })
+    .catch(error => console.error('Erro ao carregar posters:', error));
+};
+
+
 window.addEventListener("load", () => {
   isLoggedIn();
+  fetchPosters();
   setTimeout(() => {
     preloader.classList.remove("visible");
     preloader.classList.add("hidden");
@@ -144,4 +167,4 @@ window.addEventListener("load", () => {
     );
   }, 1500);
 });
->>>>>>> bb2676cf853ccdb746bacfc1e2fa781c7b370f21
+
