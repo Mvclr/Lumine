@@ -128,59 +128,77 @@ fileInput.addEventListener('change', () => {
 });
 
 
-// ===================== POSTERS NA TELA PRINCIPAL ====================
+// ===================== POSTERS NA TELA DE CATEGORIAS ====================
 
+    function carregarFilmesPorCategoria(genero) {
+  const container = document.querySelector('.categoryContainer');
+  container.innerHTML = `
+    <h1>${genero}</h1>
+    <div class="category-filmes-list">
+      <ul></ul>
+    </div>
+    <div class="category-list">
+      <ul>
+        <li><a href="#" data-genero="Action">Action</a></li>
+        <li><a href="#" data-genero="Adventure">Adventure</a></li>
+        <li><a href="#" data-genero="Comedy">Comedy</a></li>
+        <li><a href="#" data-genero="Drama">Drama</a></li>
+        <li><a href="#" data-genero="Horror">Horror</a></li>
+        <li><a href="#" data-genero="Sci-Fi">Sci-Fi</a></li>
+        <li><a href="#" data-genero="Romance">Romance</a></li>
+      </ul>
+    </div>
+  `;
 
-
-
-
-
-const postersContainer = document.getElementById('moviesContainer');
-
-const fetchPosters = () => {
-  fetch('/api/mainMovies')
-    .then(response => response.json())
-    .then(data => {
-      postersContainer.innerHTML = '';
-
-      data.forEach(poster => {
-        const posterElement = document.createElement('div');
-        posterElement.className = 'poster';
-        posterElement.id = poster.imdbID; // Adiciona o ID do IMDb como ID do elemento
-        posterElement.style.cursor = 'pointer';
-        posterElement.innerHTML = `
-         <a href="/movie/${poster.imdbID}">
-          <img src="${poster.posterUrl}" alt="${poster.title}" />
-          <h3>${poster.title}</h3>
-          </a>
+  fetch(`/api/category/${encodeURIComponent(genero)}`)
+    .then(res => res.json())
+    .then(filmes => {
+      const ul = container.querySelector('.category-filmes-list ul');
+      if (!filmes.length) {
+        ul.innerHTML = `<li>Nenhum filme encontrado para esta categoria.</li>`;
+        return;
+      }
+      filmes.forEach(filme => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <div class="category-movie-card">
+            <img src="${filme.posterUrl || '/images/default-poster.png'}" alt="${filme.title}" />
+            <h3>${filme.title} (${filme.year})</h3>
+          </div>
         `;
-        postersContainer.appendChild(posterElement);
+        ul.appendChild(li);
+        console.log(filme);
       });
     })
-    .catch(error => console.error('Erro ao carregar posters:', error));
-};
+    .catch(() => {
+      const ul = container.querySelector('.category-filmes-list ul');
+      ul.innerHTML = `<li>Erro ao carregar filmes.</li>`;
+    });
+
+  // Reaplica os eventos nos links das categorias
+  setTimeout(() => {
+    document.querySelectorAll('.category-list a').forEach(link => {
+      link.onclick = (e) => {
+        e.preventDefault();
+        carregarFilmesPorCategoria(link.dataset.genero);
+      };
+    });
+  }, 100);
+}
+
+// Evento para os links das categorias ao carregar a página
+window.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll('.category-list a').forEach(link => {
+    link.onclick = (e) => {
+      e.preventDefault();
+      carregarFilmesPorCategoria(link.textContent.trim());
+    };
+  });
+});
 
 
-// const moviesWrapper = document.getElementById('moviesWrapper');
-// const fetchPostersWrapper = () => {
-//   fetch('/api/mainMovies')
-//     .then(response => response.json())
-//     .then(data => {
-//       moviesWrapper.innerHTML = '';
-//       let count = 1;
-//       data.forEach(poster => {
-//         if (count < 5) {
-//           const posterElement = document.createElement('img');
-//           posterElement.className = `movieWrapperImg img${count}`;
-//           posterElement.src = poster.posterUrl;
-//           posterElement.alt = poster.title;
-//           moviesWrapper.appendChild(posterElement);
-//           count++;
-//         }
-//       });
-//     })
-//     .catch(error => console.error('Erro ao carregar posters:', error));
-// };
+
+
 
 // SINOPSE
 
@@ -199,8 +217,6 @@ function closeSynopsisPopup() {
 // ===================== EVENTO DE LOAD =====================
 window.addEventListener("load", () => {
   isLoggedIn();
-  // fetchPostersWrapper();
-  fetchPosters();
 
   setTimeout(() => {
     preloader.classList.remove("visible");

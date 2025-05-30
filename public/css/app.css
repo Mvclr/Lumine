@@ -193,6 +193,7 @@ header .profile {
 header .profile img {
   width: 40px;
   cursor: pointer;
+  border-radius: 100px;
 }
 
 header .header-right {
@@ -537,4 +538,43 @@ main {
   margin: 0;
   color: #fff;
 }
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.hidden {
+  display: none;
+}
+
+.popup-synopsis {
+  background: #111;
+  padding: 20px;
+  max-width: 500px;
+  border-radius: 8px;
+  color: white;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+
 

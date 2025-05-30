@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../css/login.css">
+    <link rel="icon" href="images/icon.jpg" type="image/x-icon" />
     <title>Sign in | Lumine</title>
 </head>
 
@@ -24,17 +25,21 @@
                 <form id="loginForm">
                     <div class="form-group">
                         <label for="username">Your username</label>
-                        <input type="text" id="username" placeholder="Username" name="username"/>
+                        <input type="text" id="username" placeholder="Username" name="username" />
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" id="password" placeholder="* * * * * * * *" name="password"/>
+                        <div class="input-wrapper">
+                            <input type="password" id="password" placeholder="* * * * * * * *" name="password" />
+                            <i class="bi bi-eye-fill toggle-password" id="iconeOlho"></i>
+                        </div>
                     </div>
                     <div class="form-options">
                         <div></div>
                         <a href="#">Forgot password?</a>
                     </div>
-                    <p class="msg-js" style="opacity: 0; text-align: center; transition: 0.2s;">Usuário ou senha incorretos</p>
+                    <p class="msg-js" style="opacity: 0; text-align: center; transition: 0.2s;">Usuário ou senha
+                        incorretos</p>
                     <button type="submit" class="btn">Sign in</button>
                     <div class="signup-text">
                         Don’t have an account? <a href="/cadastro">Sign up</a>
@@ -48,5 +53,6 @@
     </section>
 
 </body>
-    <script src="../js/login.js"></script>
+<script src="../js/login.js"></script>
+
 </html>

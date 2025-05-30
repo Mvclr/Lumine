@@ -4,7 +4,7 @@ import principalRoutes from "./routes/principalRoutes.js";
 import cadastroRoutes from "./routes/registerRoutes.js";
 import perfilRoutes from "./routes/perfilRoutes.js";
 import movieRoutes from "./routes/movieRoutes.js";
-
+import categoryRoutes from "./routes/categoryRoutes.js";
 
 const router = express.Router();
 
@@ -13,5 +13,6 @@ router.use(principalRoutes);
 router.use(cadastroRoutes);
 router.use(perfilRoutes)
 router.use(movieRoutes)
+router.use(categoryRoutes);
 
 export default router;

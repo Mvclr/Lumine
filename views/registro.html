@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../css/register.css">
+    <link rel="icon" href="images/icon.jpg" type="image/x-icon" />
     <title>Sign up | Lumine</title>
 </head>
 
@@ -31,7 +32,10 @@
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" placeholder="* * * * * * * *" name="password"/>
+                        <div class="input-wrapper">
+                            <input type="password" id="password" placeholder="* * * * * * * *" name="password" />
+                            <i class="bi bi-eye-fill toggle-password" id="iconeOlho"></i>
+                        </div>
                     </div>
 
                     <div class="form-options">
@@ -52,6 +56,7 @@
         </div>
     </section>
 
+    <script src="../js/registro.js"></script>
 </body>
 
 </html>
