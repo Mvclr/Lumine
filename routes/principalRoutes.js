@@ -13,11 +13,11 @@ const __dirname = path.dirname(__filename);
 router.use(express.static(path.join(path.dirname(''), "../public")));
 
 router.get("/", verifyJWTMiddleware, (req, res) => {
-  res.sendFile(path.join(__dirname, "../views", "index.html"));
+  res.sendFile(path.join(__dirname, "../docs", "index.html"));
 });
 
 router.get("/principal", verifyJWTMiddleware, (req, res) => {
-  res.sendFile(path.join(__dirname, "../views", "principal.html"));
+  res.sendFile(path.join(__dirname, "../docs", "index.html"));
 });
 
 router.get("/api/IsLoggedIn", isLoggedIn, (req, res) => {

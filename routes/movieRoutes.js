@@ -1,8 +1,10 @@
-import express from 'express';
+import express, { urlencoded } from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
 import fetch from 'node-fetch';
 import Movie from '../classes/movie.js';
+import connection from '../db/db_server.js';
+import { decode } from 'punycode';
 dotenv.config();
 
 const FANART_API_KEY = process.env.FANART_API_KEY;
@@ -37,94 +39,66 @@ const movieTitles = [
 
 router.get('/movie/:id', async (req, res) => {
   const { id } = req.params;
-
   try {
-    
-    const omdbResponse = await fetch(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}`);
-    const data = await omdbResponse.json();
-
-    if (data.Response === "True") {
-      let posterUrl = '';
-      
-      try {
-        const fanartResponse = await fetch(`https://webservice.fanart.tv/v3/movies/${id}?api_key=${FANART_API_KEY}`);
-        const fanartData = await fanartResponse.json();
-        if (fanartData.movieposter && fanartData.movieposter.length > 0) {
-          posterUrl = fanartData.movieposter[0].url;
+    connection.query(
+      'SELECT movie_id AS imdbID, title AS name, year, runtime, imdb_rating, synopsis, poster_url, actors, director, genres FROM movies WHERE movie_id = ? LIMIT 1',
+      [id],
+      (err, results) => {
+        if (err) {
+          console.error('Erro ao buscar filme:', err);
+          return res.status(500).json({ error: 'Erro ao buscar filme.' });
         }
-      } catch (err) {
-        console.warn(`Poster não encontrado no Fanart.tv para ${id}`);
+        if (results.length === 0) {
+          return res.status(404).json({ error: 'Filme não encontrado.' });
+        }
+        res.json(results[0]);
       }
-
-      
-      res.json({
-        synopsis: data.Plot,
-        name: data.Title,
-        year: data.Year,
-        imdbRating: data.imdbRating,
-        runtime: data.Runtime,
-        posterUrl: posterUrl 
-      });
-    } else {
-      res.status(404).json({ error: 'Filme não encontrado.' });
-    }
+    );
   } catch (error) {
-    console.error('Erro ao buscar sinopse:', error);
-    res.status(500).json({ error: 'Erro ao buscar sinopse.' });
+    console.error('Erro ao buscar filme:', error);
+    res.status(500).json({ error: 'Erro ao buscar filme.' });
   }
 });
 
 router.get('/api/mainMovies', async (req, res) => {
   try {
-    const movieData = await Promise.all(
-      movieTitles.map(async (titulo) => {
-        // Dados básicos do filme por OMDB API
-        const response = await fetch(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&t=${encodeURIComponent(titulo)}`);
-        const data = await response.json();
-
-        if (data.Response === "True" && data.imdbID) {
-          const imdbID = data.imdbID;
-          // Busca do POSTER unicamente pelo Fanart API, usando o id do IMDB
-          let posterUrl = '';
-          try {
-            const fanartResponse = await fetch(`https://webservice.fanart.tv/v3/movies/${imdbID}?api_key=${FANART_API_KEY}`);
-            const fanartData = await fanartResponse.json();
-            if (fanartData.movieposter && fanartData.movieposter.length > 0) {
-              posterUrl = fanartData.movieposter[0].url;
-              console.log(`Poster encontrado: ${posterUrl}`);
-            } else {
-              return null
-            }
-          } catch (err) {
-            console.warn(`Poster não encontrado no Fanart.tv para ${titulo}`);
-            return null;
-          }
-
-          // Passando pra classe antes de retornar todas as infos
-          const movie = new Movie(
-            data.Title,
-            data.Actors,
-            data.Director,
-            data.Year,
-            data.imdbRating,
-            data.Runtime
-            
-          );
-          movie.posterUrl = posterUrl;
-          movie.imdbID = imdbID;
-          return movie;
-        } else {
-          console.error(`Filme não encontrado: ${titulo}`);
-          return null;
+    connection.query(
+      'SELECT movie_id AS imdbID, title, year, runtime, imdb_rating, synopsis, poster_url, actors, director, genres FROM movies',
+      (err, results) => {
+        if (err) {
+          console.error('Erro ao buscar filmes:', err);
+          return res.status(500).json({ error: 'Erro ao buscar filmes.' });
         }
-      })
+        res.json(results);
+      }
     );
-
-    const validMovies = movieData.filter(movie => movie !== null);
-    res.json(validMovies);
   } catch (error) {
     console.error('Erro ao buscar filmes:', error);
     res.status(500).json({ error: 'Erro ao buscar filmes.' });
+  }
+});
+
+router.get('/pesquisa/:filme', async (req, res) => {
+  const { filme } = req.params;
+  const search = decodeURIComponent(filme)
+  try {
+    connection.query(
+      'SELECT movie_id AS imdbID, title AS name, year, runtime, imdb_rating, synopsis, poster_url FROM movies WHERE title LIKE ? LIMIT 1',
+      [`%${search}%`],
+      (err, results) => {
+        if (err) {
+          console.error('Erro ao buscar filme:', err);
+          return res.status(500).json({ error: 'Erro ao buscar filme.' });
+        }
+        if (results.length === 0) {
+          return res.status(404).json({ error: 'Filme não encontrado.' });
+        }
+        res.json(results[0]);
+      }
+    );
+  } catch (error) {
+    console.error('Erro ao buscar filme:', error);
+    res.status(500).json({ error: 'Erro ao buscar filme.' });
   }
 });
 

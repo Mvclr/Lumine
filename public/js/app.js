@@ -1,4 +1,3 @@
-
 // ===================== PRELOAD =====================
 const preloader = document.getElementById("preloader");
 
@@ -18,15 +17,12 @@ const isLoggedIn = () => {
         const username = data.user.username;
 
         header.innerHTML = `
+          
           <div class="input">
-            <i class="bi bi-search"></i>
-            <input
-              type="text"
-              name="pesquisa"
-              placeholder="Search orders"
-              id="input"
-            />
-          </div>
+  <i class="bi bi-search"></i>
+  <input type="text" name="pesquisa" placeholder="Search movies" id="search-input" />
+  <button id="search-button">Search</button>
+</div>
 
           <div class="header-right">
             <div class="buttons">
@@ -130,11 +126,6 @@ fileInput.addEventListener('change', () => {
 
 // ===================== POSTERS NA TELA PRINCIPAL ====================
 
-
-
-
-
-
 const postersContainer = document.getElementById('moviesContainer');
 
 const fetchPosters = () => {
@@ -146,11 +137,11 @@ const fetchPosters = () => {
       data.forEach(poster => {
         const posterElement = document.createElement('div');
         posterElement.className = 'poster';
-        posterElement.id = poster.imdbID; // Adiciona o ID do IMDb como ID do elemento
+        posterElement.id = poster.imdbID;
         posterElement.style.cursor = 'pointer';
         posterElement.innerHTML = `
          <a href="/movie/${poster.imdbID}">
-          <img src="${poster.posterUrl}" alt="${poster.title}" />
+          <img src="${poster.poster_url}" alt="${poster.title}" />
           <h3>${poster.title}</h3>
           </a>
         `;
@@ -161,26 +152,74 @@ const fetchPosters = () => {
 };
 
 
-// const moviesWrapper = document.getElementById('moviesWrapper');
-// const fetchPostersWrapper = () => {
-//   fetch('/api/mainMovies')
-//     .then(response => response.json())
-//     .then(data => {
-//       moviesWrapper.innerHTML = '';
-//       let count = 1;
-//       data.forEach(poster => {
-//         if (count < 5) {
-//           const posterElement = document.createElement('img');
-//           posterElement.className = `movieWrapperImg img${count}`;
-//           posterElement.src = poster.posterUrl;
-//           posterElement.alt = poster.title;
-//           moviesWrapper.appendChild(posterElement);
-//           count++;
-//         }
-//       });
-//     })
-//     .catch(error => console.error('Erro ao carregar posters:', error));
-// };
+// ===================== PESQUISA DE FILMES =====================
+document.addEventListener("DOMContentLoaded", () => {
+  const searchInput = document.getElementById('search-input');
+  const searchButton = document.getElementById('search-button');
+  const postersContainer = document.getElementById('moviesContainer');
+
+  if (!searchInput || !searchButton || !postersContainer) {
+    console.error('Elementos de pesquisa ou container de posters não encontrados.');
+    return;
+  }
+
+  const performSearch = async () => {
+    const query = searchInput.value.trim();
+    if (query) {
+      try {
+        const response = await fetch(`/pesquisa/${encodeURIComponent(query)}`);
+        if (!response.ok) {
+          throw new Error(`Erro na requisição: ${response.status}`);
+        }
+        const data = await response.json();
+
+        postersContainer.innerHTML = ''; // Limpa os resultados anteriores
+
+        if (data.error || !data.name) {
+          postersContainer.innerHTML = '<p>Nenhum filme encontrado.</p>';
+        } else {
+          const posterElement = document.createElement('div');
+          posterElement.className = 'poster';
+          posterElement.innerHTML = `
+            <img src="${data.posterUrl}" alt="${data.name}" />
+            <h3>${data.name}</h3>
+            <p>${data.synopsis}</p>
+            <p><strong>Ano:</strong> ${data.year}</p>
+            <p><strong>Duração:</strong> ${data.runtime}</p>
+            <p><strong>Nota IMDb:</strong> ${data.imdbRating}</p>
+          `;
+          postersContainer.appendChild(posterElement);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar filme:', error);
+        alert('Ocorreu um erro ao buscar o filme. Tente novamente mais tarde.');
+      }
+    }
+  };
+
+  // Evento ao pressionar Enter no input
+  searchInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      performSearch();
+    }
+  });
+
+  // Evento ao clicar no botão
+  searchButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    performSearch();
+  });
+});
+
+
+// ===================== EVENTO DE LOAD =====================
+window.addEventListener("DOMContentLoaded", () => {
+  isLoggedIn();
+  fetchPosters();
+});
+
+
 
 // SINOPSE
 
@@ -198,10 +237,6 @@ function closeSynopsisPopup() {
 
 // ===================== EVENTO DE LOAD =====================
 window.addEventListener("load", () => {
-  isLoggedIn();
-  // fetchPostersWrapper();
-  fetchPosters();
-
   setTimeout(() => {
     preloader.classList.remove("visible");
     preloader.classList.add("hidden");

@@ -13,7 +13,7 @@ const __dirname = path.dirname(__filename);
 router.use(express.static(path.join(__dirname, "../public")));
 
 router.get("/login", (req, res) => {
-  res.sendFile(path.join(__dirname, "../views", "login.html"));
+  res.sendFile(path.join(__dirname, "../docs", "login.html"));
 });
 
 router.post("/login", async (req, res) => {

@@ -38,55 +38,23 @@ const movieTitles = [
 
 
 router.get("/category", verifyJWTMiddleware, (req, res) => {
-     res.sendFile(path.join(__dirname, "../views/category.html"));
+     res.sendFile(path.join(__dirname, "../docs/category.html"));
 
 })
-router.get("/api/category/:genre", verifyJWTMiddleware, async (req, res) => {
+router.get("/api/filtra/:genre", verifyJWTMiddleware, async (req, res) => {
   const { genre } = req.params;
-  const OMDB_API_KEY = process.env.OMDB_API_KEY;
-  const FANART_API_KEY = process.env.FANART_API_KEY;
-
   try {
-
-    const movies = await Promise.all(
-      movieTitles.map(async (title) => {
-
-        const omdbResponse = await fetch(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&t=${encodeURIComponent(title)}&type=movie`);
-        const details = await omdbResponse.json();
-
-        if (
-          details.Response !== "True" ||
-          !details.Genre ||
-          !details.Genre.toLowerCase().includes(genre.toLowerCase())
-        ) {
-          return null;
+    connection.query(
+      "SELECT movie_id AS imdbID, title, year, poster_url FROM movies WHERE genres LIKE ?",
+      [`%${genre}%`],
+      (err, results) => {
+        if (err) {
+          console.error("Erro ao buscar filmes por categoria:", err);
+          return res.status(500).json({ error: "Erro ao buscar filmes por categoria." });
         }
-
-
-        let posterUrl = "";
-        try {
-          const fanartResponse = await fetch(`https://webservice.fanart.tv/v3/movies/${details.imdbID}?api_key=${FANART_API_KEY}`);
-          const fanartData = await fanartResponse.json();
-          if (fanartData.movieposter && fanartData.movieposter.length > 0) {
-            posterUrl = fanartData.movieposter[0].url;
-          }
-        } catch (err) {
-
-        }
-
-        return {
-          imdbID: details.imdbID,
-          title: details.Title,
-          year: details.Year,
-          posterUrl,
-        };
-      })
+        res.json(results);
+      }
     );
-
-
-    const filteredMovies = movies.filter(Boolean);
-    console.log(`Filmes encontrados para o gênero ${genre}:`, filteredMovies.length, filteredMovies);
-    res.json(filteredMovies);
   } catch (error) {
     console.error("Erro ao buscar filmes por categoria:", error);
     res.status(500).json({ error: "Erro ao buscar filmes por categoria." });

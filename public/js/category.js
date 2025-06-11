@@ -150,7 +150,7 @@ fileInput.addEventListener('change', () => {
     </div>
   `;
 
-  fetch(`/api/category/${encodeURIComponent(genero)}`)
+  fetch(`/api/filtra/${encodeURIComponent(genero)}`)
     .then(res => res.json())
     .then(filmes => {
       const ul = container.querySelector('.category-filmes-list ul');
@@ -161,8 +161,8 @@ fileInput.addEventListener('change', () => {
       filmes.forEach(filme => {
         const li = document.createElement('li');
         li.innerHTML = `
-          <div class="category-movie-card">
-            <img src="${filme.posterUrl || '/images/default-poster.png'}" alt="${filme.title}" />
+          <div class="category-movie-card" style="cursor: pointer;" onclick="window.location.href='/movie/${filme.imdbID}'">
+            <img src="${filme.poster_url || '/images/default-poster.png'}" alt="${filme.title}" />
             <h3>${filme.title} (${filme.year})</h3>
           </div>
         `;

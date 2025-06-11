@@ -13,7 +13,7 @@ const __dirname = path.dirname(__filename);
 router.use(express.static(path.join(__dirname, "../public")));
 
 router.get("/cadastro", (req, res) => {
-  res.sendFile(path.join(__dirname, "../views", "registro.html"));
+  res.sendFile(path.join(__dirname, "../docs", "registro.html"));
 });
 
 router.post("/cadastro", async (req, res) => {

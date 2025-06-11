@@ -19,57 +19,44 @@ router.get('/saves', (req,res) => {
 
 
 
-/*
-
-router.post('/api/saves', (req, res) => {
-  const { imdbID } = req.body;
-  const username = req.cookies.username;
-
-  if (!imdbID || !username) {
-    return res.status(400).json({ error: 'imdbID ou cookie.username ausente' });
-  }
-
-  // Passo 1: Criar a conexão diretamente com o banco
-  connection.connect((err) => {
-    if (err) {
-      console.error('Erro ao conectar no banco:', err);
-      return res.status(500).json({ error: 'Erro ao conectar no banco de dados' });
+router.post('/save/:id', async (req, res) => {
+  try {
+    const imdbId = req.params.id;
+    const username = req.cookies?.username;
+    if (!username) {
+      return res.status(401).json({ error: "Usuário não autenticado." });
     }
 
-    // Passo 2: Buscar userID pelo username
-    connection.query('SELECT id FROM users WHERE username = ?', [username], (err, results) => {
-      if (err) {
-        console.error('Erro ao buscar usuário:', err);
-        connection.end(); // Fechar a conexão após o erro
-        return res.status(500).json({ error: 'Erro ao buscar usuário' });
-      }
-
-      if (results.length === 0) {
-        connection.end(); // Fechar a conexão após o erro
-        return res.status(404).json({ error: 'Usuário não encontrado' });
-      }
-
-      const userID = results[0].id;
-
-      // Passo 3: Inserir o filme na tabela favoriteMovies
-      connection.query(
-        'INSERT IGNORE INTO favoriteMovies (userID, imdbID) VALUES (?, ?)',
-        [userID, imdbID],
-        (err, result) => {
-          connection.end(); // Fechar a conexão após a operação
-
-          if (err) {
-            console.error('Erro ao salvar favorito:', err);
-            return res.status(500).json({ error: 'Erro interno ao salvar o filme' });
-          }
-
-          res.status(201).json({ message: 'Filme salvo com sucesso nos favoritos.' });
+    // Buscar o id do usuário pelo username
+    connection.query(
+      "SELECT id FROM users WHERE username = ?",
+      [username],
+      (err, userRows) => {
+        if (err) {
+          return res.status(500).json({ error: "Erro ao buscar usuário." });
         }
-      );
-    });
-  });
+        if (userRows.length === 0) {
+          return res.status(404).json({ error: "Usuário não encontrado." });
+        }
+        const userId = userRows[0].id;
+
+        // Inserir na tabela favorites
+        connection.query(
+          "INSERT INTO favorites (user_id, movie_id) VALUES (?, ?)",
+          [userId, imdbId],
+          (err2) => {
+            if (err2) {
+              return res.status(500).json({ error: "Erro ao adicionar aos favoritos." });
+            }
+            res.status(201).json({ message: "Filme adicionado aos favoritos com sucesso." });
+          }
+        );
+      }
+    );
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao adicionar aos favoritos." });
+  }
 });
- */
 
 
 
